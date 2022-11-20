@@ -1,13 +1,12 @@
-//import 'bootstrap/dist/css/bootstrap.css';
-import { CreateFormProvider } from "../contexts/CreateFormContext";
+import { FormEditorProvider } from "../contexts/FormEditorContext";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <CreateFormProvider>
+      <FormEditorProvider>
         <Component {...pageProps} />
-      </CreateFormProvider>
+      </FormEditorProvider>
     </>
   );
 }
