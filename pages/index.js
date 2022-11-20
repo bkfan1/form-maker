@@ -1,4 +1,3 @@
-import FormCard from "../components/FormCard";
 import FormEditorWrapper from "../components/FormEditorWrapper";
 
 export default function Home() {
@@ -6,7 +5,7 @@ export default function Home() {
     <>
       <div>
         <main className="flex flex-col items-center justify-center py-8">
-          <FormEditorWrapper />
+          <FormEditorWrapper/>
         </main>
       </div>
     </>
