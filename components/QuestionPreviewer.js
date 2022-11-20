@@ -1,50 +1,55 @@
 export default function QuestionPreviewer({ questionData, inputData }) {
   const { title, required, option } = questionData;
+  const { min, max, maxLength, minLength } = inputData;
 
   return (
     <>
       <h1 className="text-2xl font-bold">
         {title}
-        {required ? (
+        {required && (
           <span title="This question is required" className="text-red-500 ml-1">
             *
           </span>
-        ) : (
-          ""
         )}
       </h1>
 
       {option === "shortAnswer" && (
-        <input
-          type="text"
-          minLength={inputData.minLength}
-          maxLength={inputData.maxLength}
-          placeholder="Your answer"
-          className="customInput p-1 border-2 rounded focus:border-indigo-800"
-        />
+        <fieldset>
+          <input
+            type="text"
+            minLength={minLength}
+            maxLength={maxLength}
+            placeholder="Your answer"
+            className="customInput p-1 border-2 rounded focus:border-indigo-800"
+          />
+        </fieldset>
       )}
 
       {option === "paragraph" && (
-        <textarea
-          placeholder="Your answer (256 characters maximum)."
-          className="customInput p-1 border-2 rounded resize-none focus:border-indigo-800"
-        ></textarea>
+        <fieldset>
+          <textarea
+            placeholder="Your answer (256 characters maximum)."
+            className="customInput p-1 border-2 rounded resize-none focus:border-indigo-800"
+            maxLength={maxLength}
+          ></textarea>
+        </fieldset>
       )}
 
       {option === "date" && (
-        <input
-          type="date"
-          className="customInput p-1 border-2 rounded w-36 focus:border-indigo-800"
-        />
+        <fieldset>
+          <input
+            type="date"
+            className="customInput p-1 border-2 rounded w-36 focus:border-indigo-800"
+          />
+        </fieldset>
       )}
 
       {option === "linear-range" && (
-        <input
-          type="range"
-          defaultValue={inputData.min}
-          min={inputData.min}
-          max={inputData.max}
-        />
+        <fieldset className="flex gap-2 items-center">
+          <label>{min}</label>
+          <input type="range" defaultValue={min} min={min} max={max} />
+          <label>{max}</label>
+        </fieldset>
       )}
     </>
   );
