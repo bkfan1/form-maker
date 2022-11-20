@@ -11,3 +11,14 @@ body{
 .customInput:focus{
     outline: none;
 }
+
+.rangeInput::-webkit-outer-spin-button,
+.rangeInput::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.rangeInput[type=number] {
+  -moz-appearance: textfield;
+}
