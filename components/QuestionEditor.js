@@ -1,13 +1,12 @@
 import { useContext, useEffect, useState } from "react";
-import { CreateFormContext } from "../contexts/CreateFormContext";
+import { FormEditorContext } from "../contexts/FormEditorContext";
 import QuestionPreviewer from "./QuestionPreviewer";
 
 export default function QuestionEditor({ data }) {
   const { id, title, option, inputData, required } = data;
   const { formData, dispatch, focusedQuestionId, setFocusedQuestionId } =
-    useContext(CreateFormContext);
+    useContext(FormEditorContext);
 
-  const [selectedOption, setSelectedOption] = useState(option);
   const [previewField, setPreviewField] = useState(false);
 
   const handleDeleteQuestion = (id) => {
@@ -44,8 +43,6 @@ export default function QuestionEditor({ data }) {
   const handleOnChangeSelect = (e, id) => {
     const { target } = e;
     const { name, value } = target;
-
-    setSelectedOption(value);
 
     let newInputData;
 
@@ -96,6 +93,7 @@ export default function QuestionEditor({ data }) {
           <button
             onClick={() => setPreviewField(!previewField)}
             title={previewField ? "Back to edit mode" : "Preview question"}
+            className="text-gray-500 ease-in-out duration-150 hover:text-black"
           >
             <i className="bi bi-eye" />
           </button>
@@ -103,37 +101,23 @@ export default function QuestionEditor({ data }) {
           {previewField ? (
             ""
           ) : (
-            <menu>
-              {formData.questions[0].id === id &&
-              formData.questions.length > 1 ? (
-                <button onClick={() => handleMoveQuestionDown(id)}>
-                  <i className="bi bi-arrow-down" />
-                </button>
-              ) : (
-                ""
-              )}
-
-              {formData.questions[n].id === id ? (
-                <button onClick={() => handleMoveQuestionUp(id)}>
-                  <i className="bi bi-arrow-up" />
-                </button>
-              ) : (
-                ""
-              )}
-
+            <menu className="flex items-center">
               {formData.questions[0].id !== id &&
-              formData.questions[n].id !== id ? (
-                <>
-                  <button onClick={() => handleMoveQuestionDown(id)}>
-                    <i className="bi bi-arrow-down" />
-                  </button>
-                  <button onClick={() => handleMoveQuestionUp(id)}>
-                    <i className="bi bi-arrow-up" />
-                  </button>
-                </>
-              ) : (
-                ""
-              )}
+                formData.questions[n].id !== id && (
+                  <>
+                    <button className="text-gray-500 ease-in-out duration-150 hover:text-black">
+                      <i className="bi bi-arrow-up" />
+                    </button>
+                    <button className="text-gray-500 ease-in-out duration-150 hover:text-black">
+                      <i className="bi bi-arrow-down" />
+                    </button>
+                  </>
+                )}
+
+                {formData.questions[0].id === id && <button onClick={()=>handleMoveQuestionDown(id)} className="text-gray-500 ease-in-out duration-150 hover:text-black"><i className="bi bi-arrow-down"/></button>}
+
+                {formData.questions[n].id === id && <button onClick={()=>handleMoveQuestionUp(id)} className="text-gray-500 ease-in-out duration-150 hover:text-black"><i className="bi bi-arrow-up"/></button>}
+
             </menu>
           )}
         </header>
@@ -144,14 +128,14 @@ export default function QuestionEditor({ data }) {
           </>
         ) : (
           <>
-            <section className="flex gap-6">
+            <section className="flex gap-6 pb-2">
               <div className="flex flex-col gap-4">
-                <form>
+                <form onSubmit={(e) => e.preventDefault()}>
                   <fieldset>
                     <input
                       type="text"
                       onChange={(e) => handleOnChangeQuestionTitle(e, id)}
-                      defaultValue={title}
+                      value={title}
                       placeholder="Question"
                       required
                       className="customInput ease-in-out duration-100 text-xl pb-1 border-2 border-white border-b-gray-500 focus:border-b-indigo-800"
@@ -159,59 +143,68 @@ export default function QuestionEditor({ data }) {
                   </fieldset>
                 </form>
 
-                {selectedOption === "linear-range" && (
-                  <form className="flex gap-4">
+                {option === "linear-range" && (
+                  <form
+                    onSubmit={(e) => e.preventDefault()}
+                    className="flex items-center gap-4"
+                  >
                     <input
                       type="number"
                       onChange={(e) => handleOnChangeLinearRange(e, id)}
                       name="min"
-                      defaultValue={inputData.min}
+                      value={inputData.min}
                       min={0}
                       max={inputData.max}
                       placeholder="Min value"
-                      className="customInput w-32 p-1 border-b-2 border-b-gray-500 focus:border-b-indigo-800"
+                      className="customInput rangeInput w-32 p-1 border-b-2 border-b-gray-500 focus:border-b-indigo-800"
                     />
+                    <label>To</label>
                     <input
                       type="number"
                       onChange={(e) => handleOnChangeLinearRange(e, id)}
                       name="max"
-                      defaultValue={inputData.max}
+                      value={inputData.max}
                       min={inputData.min}
                       placeholder="Max value"
-                      className="customInput w-32 p-1 border-b-2 border-b-gray-500 focus:border-b-indigo-800"
+                      className="customInput rangeInput w-32 p-1 border-b-2 border-b-gray-500 focus:border-b-indigo-800"
                     />
                   </form>
                 )}
               </div>
 
-              <select
-                onChange={(e) => handleOnChangeSelect(e, id)}
-                defaultValue={option}
-                className="h-10 p-1 border rounded focus:border-indigo-800"
-              >
-                <option value={"shortAnswer"}>Short answer</option>
-                <option value={"paragraph"}>Paragraph</option>
-                <option value={"date"}>Date</option>
-                <option value={"linear-range"}>Lineal range</option>
-              </select>
+              <form onSubmit={(e) => e.preventDefault()}>
+                <select
+                  onChange={(e) => handleOnChangeSelect(e, id)}
+                  value={option}
+                  className="h-10 p-1 border rounded focus:border-indigo-800"
+                >
+                  <option value={"shortAnswer"}>Short answer</option>
+                  <option value={"paragraph"}>Paragraph</option>
+                  <option value={"date"}>Date</option>
+                  <option value={"linear-range"}>Lineal range</option>
+                </select>
+              </form>
             </section>
 
-            <section className="flex gap-4 justify-end">
-              <button
-                onClick={() => handleDeleteQuestion(id)}
-                title="Delete this question"
-              >
-                <i className="bi bi-trash" />
-              </button>
+            <section className=" pt-2 border-t-2 border-t-gray-200">
+              <menu className="flex items-center justify-end gap-4">
+                <button
+                  onClick={() => handleDeleteQuestion(id)}
+                  title="Delete this question"
+                  className="text-gray-500 ease-in-out duration-150 hover:text-black"
+                >
+                  <i className="bi bi-trash" />
+                </button>
 
-              <fieldset title="Mark this questions as required">
-                <label className="mr-2">Required</label>
-                <input
-                  type="checkbox"
-                  checked={required}
-                  onChange={(e) => handleOnChangeRequiredQuestion(e, id)}
-                />
-              </fieldset>
+                <fieldset title="Mark this questions as required">
+                  <label className="mr-2">Required</label>
+                  <input
+                    type="checkbox"
+                    checked={required}
+                    onChange={(e) => handleOnChangeRequiredQuestion(e, id)}
+                  />
+                </fieldset>
+              </menu>
             </section>
           </>
         )}
