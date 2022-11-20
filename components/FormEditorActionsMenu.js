@@ -1,12 +1,12 @@
 import { nanoid } from "nanoid";
 import { useContext } from "react";
-import { CreateFormContext } from "../contexts/CreateFormContext";
+import { FormEditorContext } from "../contexts/FormEditorContext";
 
 export default function FormEditorActionsMenu() {
-  const { dispatch } = useContext(CreateFormContext);
+  const { dispatch } = useContext(FormEditorContext);
 
   const handleAddNewQuestion = () => {
-    let newQuestion = {
+    const newQuestion = {
       id: nanoid(),
       title: "Untitled question",
       option: "shortAnswer",
@@ -34,7 +34,6 @@ export default function FormEditorActionsMenu() {
         </button>
 
         <button
-          onClick={handleAddNewQuestion}
           title="Save form"
           className="text-xl"
         >
@@ -43,6 +42,10 @@ export default function FormEditorActionsMenu() {
 
         <button className="text-xl">
           <i className="bi bi-send" title="Publish form" />
+        </button>
+
+        <button className="text-xl">
+          <i className="bi bi-x-circle" title="Delete form" />
         </button>
       </menu>
     </>
