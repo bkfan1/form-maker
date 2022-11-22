@@ -4,10 +4,13 @@ import QuestionPreviewer from "./QuestionPreviewer";
 
 export default function QuestionEditor({ data }) {
   const { id, title, option, inputData, required } = data;
-  const { formData, dispatch, focusedQuestionId, setFocusedQuestionId } =
-    useContext(FormEditorContext);
-
-  const [previewField, setPreviewField] = useState(false);
+  const {
+    formData,
+    dispatch,
+    previewForm,
+    focusedQuestionId,
+    setFocusedQuestionId,
+  } = useContext(FormEditorContext);
 
   const handleDeleteQuestion = (id) => {
     dispatch({ type: "DELETE_QUESTION", payload: { id } });
@@ -84,45 +87,56 @@ export default function QuestionEditor({ data }) {
       <figure
         onClick={() => setFocusedQuestionId(id)}
         className={`ease-in-out duration-100 flex flex-col gap-4 p-4 bg-white border rounded border-l-8 ${
-          focusedQuestionId === id
+          focusedQuestionId === id || previewForm
             ? "border-l-indigo-800 shadow-md"
             : "border-l-gray-500 shadow-sm"
         }`}
       >
         <header className="flex gap-4 justify-end">
-          <button
-            onClick={() => setPreviewField(!previewField)}
-            title={previewField ? "Back to edit mode" : "Preview question"}
-            className="text-gray-500 ease-in-out duration-150 hover:text-black"
-          >
-            <i className="bi bi-eye" />
-          </button>
-
-          {previewField ? (
+          {previewForm ? (
             ""
           ) : (
             <menu className="flex items-center">
               {formData.questions[0].id !== id &&
                 formData.questions[n].id !== id && (
                   <>
-                    <button className="text-gray-500 ease-in-out duration-150 hover:text-black">
+                    <button
+                      onClick={() => handleMoveQuestionUp(id)}
+                      className="text-gray-500 ease-in-out duration-150 hover:text-black"
+                    >
                       <i className="bi bi-arrow-up" />
                     </button>
-                    <button className="text-gray-500 ease-in-out duration-150 hover:text-black">
+                    <button
+                      onClick={() => handleMoveDown(id)}
+                      className="text-gray-500 ease-in-out duration-150 hover:text-black"
+                    >
                       <i className="bi bi-arrow-down" />
                     </button>
                   </>
                 )}
 
-                {formData.questions[0].id === id && <button onClick={()=>handleMoveQuestionDown(id)} className="text-gray-500 ease-in-out duration-150 hover:text-black"><i className="bi bi-arrow-down"/></button>}
+              {formData.questions[0].id === id && (
+                <button
+                  onClick={() => handleMoveQuestionDown(id)}
+                  className="text-gray-500 ease-in-out duration-150 hover:text-black"
+                >
+                  <i className="bi bi-arrow-down" />
+                </button>
+              )}
 
-                {formData.questions[n].id === id && <button onClick={()=>handleMoveQuestionUp(id)} className="text-gray-500 ease-in-out duration-150 hover:text-black"><i className="bi bi-arrow-up"/></button>}
-
+              {formData.questions[n].id === id && (
+                <button
+                  onClick={() => handleMoveQuestionUp(id)}
+                  className="text-gray-500 ease-in-out duration-150 hover:text-black"
+                >
+                  <i className="bi bi-arrow-up" />
+                </button>
+              )}
             </menu>
           )}
         </header>
 
-        {previewField ? (
+        {previewForm ? (
           <>
             <QuestionPreviewer questionData={data} inputData={inputData} />
           </>
