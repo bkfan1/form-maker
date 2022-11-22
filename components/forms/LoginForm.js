@@ -2,16 +2,25 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { email } from "../../utils/regex";
 import FieldErrorMessage from "../FieldErrorMessage";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function LoginForm() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
+    try {
+      const res = await axios.post('/api/auth/login', data);
+      router.push('/user/forms/view');
+    } catch (error) {
+      console.warn("error")
+    }
   };
 
   return (
