@@ -6,6 +6,7 @@ import { createToken } from "../jwt";
 import { serialize } from "cookie";
 
 export const handleLogin = async (req, res) => {
+
   const { body } = req;
 
   if (!body.email || !body.password) {

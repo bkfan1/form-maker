@@ -3,10 +3,12 @@ import { hash } from "bcrypt";
 import Account from "../../database/models/account";
 import { fullname, email } from "../../utils/regex";
 
-export const registerAccount = async (req, res) => {
-  const db = await connection();
+export const registerAccount = async (req, res, token) => {
+  if (token) {
+    return await res.status(403).json({ message: "" });
+  }
 
-  console.log(req.headers.cookie)
+  const db = await connection();
 
   const { body } = req;
 
@@ -44,6 +46,7 @@ export const registerAccount = async (req, res) => {
       fullname: body.fullname,
       email: body.email,
       password: hashedPassword,
+      forms: [],
 
       createdAt: new Date(),
     });
