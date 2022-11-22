@@ -7,6 +7,7 @@ export const initialFormState = {
 
   questions: [],
 
+  published: false,
   createdAt: new Date().toLocaleDateString(),
   updatedAt: null,
 };
