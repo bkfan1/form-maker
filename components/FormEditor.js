@@ -1,9 +1,9 @@
-import { useContext } from "react";
+import { useContext} from "react";
 import { FormEditorContext } from "../contexts/FormEditorContext";
 import QuestionEditor from "./QuestionEditor";
 
 export default function FormEditor() {
-  const { formData, dispatch } = useContext(FormEditorContext);
+  const { formData, dispatch, previewForm } = useContext(FormEditorContext);
 
   const handleOnChangeFormHeaders = (e) => {
     const { target } = e;
@@ -25,6 +25,7 @@ export default function FormEditor() {
                 name="title"
                 onChange={(e) => handleOnChangeFormHeaders(e)}
                 value={formData.title}
+                disabled={previewForm ? true : false}
                 className="customInput pb-1 text-2xl font-bold customInput ease-in-out duration-100 border-2 border-white focus:border-b-indigo-800"
               />
             </fieldset>
@@ -35,6 +36,7 @@ export default function FormEditor() {
                 name="description"
                 onChange={(e) => handleOnChangeFormHeaders(e)}
                 value={formData.description}
+                disabled={previewForm ? true : false}
                 className="customInput ease-in-out duration-100 border-2 border-white focus:border-b-indigo-800"
               />
             </fieldset>
