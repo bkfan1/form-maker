@@ -1,15 +1,13 @@
+import Footer from "./Footer";
+import Navbar from "./Navbar";
 
 
 export default function Layout({children}){
     return(
         <>
-        <nav>
-
-        </nav>
+        <Navbar/>
         {children}
-        <footer>
-
-        </footer>
+        <Footer/>
         </>
     )
 }
