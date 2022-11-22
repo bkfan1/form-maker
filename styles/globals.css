@@ -22,3 +22,8 @@ body{
 .rangeInput[type=number] {
   -moz-appearance: textfield;
 }
+
+.subMenu__section:last-of-type{
+  border-bottom: none;
+}
+
