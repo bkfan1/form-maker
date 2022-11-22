@@ -29,7 +29,7 @@ export default function QuestionPreviewer({ questionData, inputData }) {
         <fieldset>
           <textarea
             placeholder="Your answer (256 characters maximum)."
-            className="customInput p-1 border-2 rounded resize-none focus:border-indigo-800"
+            className="customInput w-full p-1 border-2 rounded resize-none focus:border-indigo-800"
             maxLength={maxLength}
           ></textarea>
         </fieldset>
