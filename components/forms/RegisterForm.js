@@ -2,6 +2,8 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { email, fullname } from "../../utils/regex";
 import FieldErrorMessage from "../FieldErrorMessage";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 export default function RegisterForm() {
   const {
@@ -10,8 +12,16 @@ export default function RegisterForm() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const onSubmit = async (data) => {
+
+    try {
+      const res = await axios.post('/api/register', data);
+      console.log("registered")
+      
+    } catch (error) {
+      console.warn("error!")
+    }
+    
   };
 
   return (
