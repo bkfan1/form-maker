@@ -4,15 +4,26 @@ import { initialFormState } from "../utils/initialStates/formEditor";
 
 export const FormEditorContext = createContext();
 
-export const FormEditorProvider = ({ children }) => {
-  
-  const [focusedQuestionId, setFocusedQuestionId] = useState(null);
+export const FormEditorProvider = ({ children, initialFormData }) => {
+  const [formData, dispatch] = useReducer(
+    reducer,
+    initialFormData ? initialFormData : initialFormState
+  );
 
-  const [formData, dispatch] = useReducer(reducer, initialFormState);
+  const [previewForm, setPreviewForm] = useState(false);
+
+  const [focusedQuestionId, setFocusedQuestionId] = useState(null);
 
   return (
     <FormEditorContext.Provider
-      value={{ formData, dispatch, focusedQuestionId, setFocusedQuestionId }}
+      value={{
+        formData,
+        dispatch,
+        previewForm,
+        setPreviewForm,
+        focusedQuestionId,
+        setFocusedQuestionId,
+      }}
     >
       {children}
     </FormEditorContext.Provider>
