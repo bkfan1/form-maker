@@ -46,26 +46,24 @@ export default function UserFormsPage({ forms }) {
 export async function getServerSideProps(ctx) {
   const token = verifyTokenServerSide(ctx);
 
-  if(!token){
+  if (!token) {
     return {
-      redirect: {destination: "/login", permanent:false}
-    }
+      redirect: { destination: "/login", permanent: false },
+    };
   }
 
-  const forms = await getAccountForms(token);
-
-  if(!forms){
-    return {redirect:{destination:"/500", permanent:false}}
-  }
+  const rawForms = await getAccountForms(token);
+  const leanedForms = rawForms.map((form) => {
+    return {
+      id: `${form._id}`,
+      title: form.title,
+      updatedAt: `${form.updatedAt}`,
+    };
+  });
 
   return {
     props: {
-      forms,
-    }
-  }
-
-
-
-
-
+      forms: leanedForms,
+    },
+  };
 }
