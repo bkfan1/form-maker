@@ -6,8 +6,6 @@ const accountSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
 
-    forms: {type:Array},
-
     createdAt: { type: Date },
   },
   { collection: "accounts" }
