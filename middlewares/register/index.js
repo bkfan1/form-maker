@@ -13,24 +13,24 @@ export const registerAccount = async (req, res, token) => {
   const { body } = req;
 
   if (!body.fullname || !body.email || !body.password) {
-    return await res.status(400).json({ message: "" });
+    return await res.status(400).json({ message: "1" });
   }
 
   if (!fullname.test(body.fullname)) {
-    return await res.status(400).json({ message: "" });
+    return await res.status(400).json({ message: "2" });
   }
 
   if (!email.test(body.email)) {
-    return await res.status(400).json({ message: "" });
+    return await res.status(400).json({ message: "3" });
   }
 
   if (body.password.length < 8) {
-    return await res.status(400).json({ message: "" });
+    return await res.status(400).json({ message: "4" });
   }
 
   const results = await Account.findOne({ email: body.email });
   if (results) {
-    return await res.status(400).json({ message: "" });
+    return await res.status(400).json({ message: "s" });
   }
 
   let hashedPassword;
@@ -46,7 +46,6 @@ export const registerAccount = async (req, res, token) => {
       fullname: body.fullname,
       email: body.email,
       password: hashedPassword,
-      forms: [],
 
       createdAt: new Date(),
     });
