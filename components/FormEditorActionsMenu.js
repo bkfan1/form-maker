@@ -3,10 +3,13 @@ import { useContext } from "react";
 import { FormEditorContext } from "../contexts/FormEditorContext";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { ModalWindowContext } from "../contexts/ModalWindowContext";
 
 export default function FormEditorActionsMenu() {
   const router = useRouter();
   const { pathname } = router;
+
+  const { showModal, setShowModal } = useContext(ModalWindowContext);
 
   const { formData, dispatch, previewForm, setPreviewForm } =
     useContext(FormEditorContext);
@@ -29,7 +32,7 @@ export default function FormEditorActionsMenu() {
   };
 
   const handleCreateForm = async () => {
-    const data = { ...formData, updatedAt: new Date() };
+    const data = { id: nanoid(), ...formData, updatedAt: new Date() };
 
     try {
       const res = await axios.post(`/api/account/forms/`, data);
@@ -62,65 +65,40 @@ export default function FormEditorActionsMenu() {
 
   return (
     <>
-      <menu className="flex flex-col gap-2 p-2 border rounded bg-white shadow-md">
-        {previewForm && (
+      <menu className="flex flex-col gap-2 p-2 text-xl border rounded bg-white shadow-md">
+        <section className="flex flex-col gap-2">
           <button
+            title={previewForm ? "Back to edit mode" : "Preview form"}
             onClick={() => setPreviewForm(!previewForm)}
-            className="text-xl"
-            title="Back to edit mode"
           >
             <i className="bi bi-eye" />
           </button>
-        )}
-        {!previewForm && (
-          <>
-            <button
-              onClick={handleAddNewQuestion}
-              title="Add new question"
-              className="text-xl"
-            >
+
+          <button title="Share form" onClick={() => setShowModal(true)}>
+            <i className="bi bi-share" />
+          </button>
+        </section>
+        {pathname === "/user/forms/edit/[formId]" && !previewForm ? <hr /> : ""}
+
+        <section className="flex flex-col gap-2">
+          {!previewForm && (
+            <button title="Add new question" onClick={handleAddNewQuestion}>
               <i className="bi bi-plus-circle" />
             </button>
+          )}
 
-            {pathname === "/user/forms/add" && (
-              <>
-                <button
-                  onClick={handleCreateForm}
-                  title="Create form"
-                  className="text-xl"
-                >
-                  <i className="bi bi-check-circle" />
-                </button>
-              </>
-            )}
-
-            {formData.questions.length > 0 && (
-              <button
-                onClick={() => setPreviewForm(!previewForm)}
-                className="text-xl"
-                title="Preview form"
-              >
-                <i className="bi bi-eye" />
+          {pathname === "/user/forms/edit/[formId]" && !previewForm ? (
+            <>
+              <button ttile="Update form" onClick={handleUpdateForm}>
+                <i className="bi bi-arrow-up-circle" />
               </button>
-            )}
 
-            {pathname === "/user/forms/edit/[formId]" && (
-              <>
-                <button onClick={handleUpdateForm} className="text-xl">
-                  <i className="bi bi-arrow-up-circle" title="Update form" />
-                </button>
-
-                <button className="text-xl">
-                  <i className="bi bi-send" title="Publish form" />
-                </button>
-
-                <button onClick={handleDeleteForm} className="text-xl">
-                  <i className="bi bi-x-circle" title="Delete form" />
-                </button>
-              </>
-            )}
-          </>
-        )}
+              <button title="Delete form" onClick={handleDeleteForm}>
+                <i className="bi bi-x-circle" />
+              </button>
+            </>
+          ) : null}
+        </section>
       </menu>
     </>
   );
