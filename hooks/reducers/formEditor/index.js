@@ -104,6 +104,15 @@ export const reducer = (state, { type, payload }) => {
         return { ...state, questions: [...updatedQuestions] };
       }
 
+      case "DELETE_SUBMISSION": {
+        const {submissionId} = payload;
+        const updatedSubmissions = [...state.submissions];
+        const index = updatedSubmissions.find((sub)=>sub.id === submissionId);
+        updatedSubmissions.splice(index, 1);
+
+        return {...state, submissions: [...updatedSubmissions]};
+      }
+
       default:
         return state;
     }
