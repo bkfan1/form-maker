@@ -17,7 +17,7 @@ export default function FormCard({ data }) {
               <i className="bi bi-file-earmark-text-fill text-xl text-indigo-800" />
               <div className="flex flex-col">
                 <p className="">Last update:</p>
-                <p>{new Date(updatedAt).toLocaleDateString()}</p>
+                <p>{new Date(updatedAt).toLocaleString()}</p>
               </div>
             </div>
             <ul className="self-end">
