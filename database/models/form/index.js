@@ -1,17 +1,19 @@
-import { Schema, models, model } from "moongose";
+import { model, models, Schema } from "mongoose";
 
-const formSchema = new Schema({
-  accountId: { type: Schema.ObjectId, ref: "Account" },
+const formSchema = new Schema(
+  {
+    accountId: { type: Schema.ObjectId, ref: "Account" },
+    title: { type: String },
+    description: { type: String },
 
-  title: { type: String, required: true },
-  description: { type: String, required: false },
+    questions: { type: Array },
 
-  questions: { type: Array },
+    submissions: {type:Array},
 
-  createdAt: { type: String },
-  updatedAt: { type: String },
-
-  published: { type: Boolean, required:true, },
-}, {collection: 'forms'});
+    createdAt: { type: Date },
+    updatedAt: { type: Date },
+  },
+  { collection: "forms" }
+);
 
 export default models.Form || model("Form", formSchema);
