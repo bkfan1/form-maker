@@ -1,13 +1,11 @@
-import { nanoid } from "nanoid";
 
 export const initialFormState = {
-  id: nanoid(),
   title: "Untitled form",
   description: "Description of this form",
 
   questions: [],
+  receivedAnswers: [],
 
-  published: false,
-  createdAt: new Date().toLocaleDateString(),
+  createdAt: new Date(),
   updatedAt: null,
 };
