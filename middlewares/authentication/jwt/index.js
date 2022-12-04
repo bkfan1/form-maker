@@ -1,6 +1,5 @@
 import { parse } from "cookie";
 import { sign, verify } from "jsonwebtoken";
-import next from "next";
 
 export const createToken = (claims, secret, options) => {
   if (!claims) {
@@ -18,7 +17,7 @@ export const verifyToken = async (req, res, next) => {
   const { cookie } = req.headers;
 
   if (!cookie) {
-    return await res.status(400).json({ message: "" });
+    return await res.status(400).json({ message: "sadasd" });
   }
 
   const parsedCookie = parse(cookie);
