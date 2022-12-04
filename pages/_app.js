@@ -1,9 +1,12 @@
+import { ModalWindowProvider } from "../contexts/ModalWindowContext";
 import "../styles/globals.css";
 
 function MyApp({ Component, pageProps }) {
   return (
     <>
-      <Component {...pageProps} />
+      <ModalWindowProvider>
+        <Component {...pageProps} />
+      </ModalWindowProvider>
     </>
   );
 }
