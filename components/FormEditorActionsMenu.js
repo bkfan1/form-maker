@@ -89,7 +89,7 @@ export default function FormEditorActionsMenu() {
 
           {pathname === "/user/forms/edit/[formId]" && !previewForm ? (
             <>
-              <button ttile="Update form" onClick={handleUpdateForm}>
+              <button title="Update form" onClick={handleUpdateForm}>
                 <i className="bi bi-arrow-up-circle" />
               </button>
 
