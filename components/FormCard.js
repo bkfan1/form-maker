@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useState } from "react";
 
 export default function FormCard({ data }) {
   const { id, title, updatedAt } = data;
@@ -6,7 +7,9 @@ export default function FormCard({ data }) {
     <>
       <figure className="ease-in-out duration-150 w-38 bg-white border rounded shadow-sm hover:shadow-md">
         <Link href={`/user/forms/edit/${id}`}>
-          <div className="h-48 bg-gray-500"></div>
+          <div className="flex flex-col items-center justify-center h-48 bg-gray-300">
+          <i className="bi bi-file-earmark-text-fill text-4xl text-indigo-800" />
+          </div>
         </Link>
 
         <section className="flex flex-col gap-1 p-2">
@@ -14,19 +17,12 @@ export default function FormCard({ data }) {
 
           <div className="flex justify-between items-center">
             <div className="flex gap-1 text-sm text-gray-500">
-              <i className="bi bi-file-earmark-text-fill text-xl text-indigo-800" />
+             
               <div className="flex flex-col">
                 <p className="">Last update:</p>
                 <p>{new Date(updatedAt).toLocaleString()}</p>
               </div>
             </div>
-            <ul className="self-end">
-              <li>
-                <button>
-                  <i className="bi bi-three-dots-vertical" />
-                </button>
-              </li>
-            </ul>
           </div>
         </section>
       </figure>
