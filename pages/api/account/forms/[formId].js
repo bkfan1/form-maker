@@ -1,8 +1,8 @@
+import { verifyToken } from "../../../../middlewares/authentication/jwt";
 import {
-  verifyToken,
-  verifyTokenServerSide,
-} from "../../../../middlewares/authentication/jwt";
-import { updateUniqueForm, deleteUniqueForm } from "../../../../middlewares/forms";
+  updateUniqueForm,
+  deleteUniqueForm,
+} from "../../../../middlewares/forms";
 
 export default async function handler(req, res) {
   switch (req.method) {
