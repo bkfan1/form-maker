@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { useState } from "react";
 
 export default function FormCard({ data }) {
   const { id, title, updatedAt } = data;
