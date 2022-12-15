@@ -1,5 +1,44 @@
 import connection from "../../database/connection";
 import Form from "../../database/models/form";
+import Account from "../../database/models/account";
+import {
+  domain,
+  generateInvitationHTMLString,
+  generateSubmitFormLink,
+} from "../../utils/strings";
+import { createTransport } from "nodemailer";
+
+const sendEmail = async (data) => {
+  try {
+    const transporter = createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+
+      auth: {
+        user: process.env.NODEMAILER_EMAIL,
+        pass: process.env.APP_PASSWORD,
+      },
+    });
+
+    const info = await transporter.sendMail({
+      from: process.env.NODEMAILER_EMAIL,
+      to: data.email,
+
+      subject: data.subject,
+
+      text: `Someone invited you to submit a form. Link: ${data.link}`,
+
+      html: generateInvitationHTMLString(data),
+    });
+
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};
 
 export const createForm = async (req, res, token) => {
   const { accountId } = token;
@@ -65,7 +104,9 @@ export const updateUniqueForm = async (req, res) => {
       submissions: body.submissions,
     };
 
-    const updatedForm = await Form.findOneAndUpdate(filter, update, {new:true});
+    const updatedForm = await Form.findOneAndUpdate(filter, update, {
+      new: true,
+    });
     return await res.status(200).json({ message: "" });
   } catch (error) {
     console.log(error);
@@ -86,13 +127,43 @@ export const deleteUniqueForm = async (req, res) => {
 export const addNewSubmission = async (req, res) => {
   try {
     const db = await connection();
-    const found = await Form.findOne({_id:req.query.formId});
-    const filter = {_id: req.query.formId};
+    const found = await Form.findOne({ _id: req.query.formId });
+    const filter = { _id: req.query.formId };
     const update = {
-      submissions: [...found.submissions, req.body]
+      submissions: [...found.submissions, req.body],
     };
 
-    await Form.findOneAndUpdate(filter, update, {new:true})
+    await Form.findOneAndUpdate(filter, update, { new: true });
+
+    return await res.status(200).json({ message: "" });
+  } catch (error) {
+    return await res.status(500).json({ message: "" });
+  }
+};
+
+export const sendFormInvitation = async (req, res, token) => {
+  try {
+    const { accountId } = token;
+    const db = await connection();
+    const found = await Account.findOne({ _id: accountId });
+
+    if (!found) {
+      return await res.status(404).json({ message: "" });
+    }
+
+    const data = {
+      email: req.body.email,
+      subject: req.body.subject,
+      message: req.body.message,
+      accountFullName: found.fullname,
+      link: generateSubmitFormLink(req.query.formId),
+    };
+
+    const submitted = await sendEmail(data);
+
+    if (!submitted) {
+      return await res.status(500).json({ message: "" });
+    }
 
     return await res.status(200).json({ message: "" });
   } catch (error) {
