@@ -8,7 +8,7 @@ export default function UserFormsPage({ forms }) {
   return (
     <>
       <Layout>
-        <main className="flex flex-col items-center gap-8 min-h-screen pt-8">
+        <main className="flex flex-col items-center gap-8 min-h-screen py-8">
           <section className="flex flex-col justify-between gap-4 w-9/12">
             <header>
               <h1>Create a new form</h1>
@@ -37,6 +37,7 @@ export default function UserFormsPage({ forms }) {
               ))}
             </div>
           </section>
+
         </main>
       </Layout>
     </>
