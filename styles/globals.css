@@ -27,16 +27,8 @@ body {
   border-bottom: none;
 }
 
-.answer__body:nth-of-type(odd) {
-  background-color: #f0ebf8;
-}
-
 .tableRow td {
   padding: 8px !important;
-}
-
-.tableRow:nth-of-type(odd) {
-  background-color: #f0ebf8;
 }
 
 @media screen and (max-width: 1024px) {
