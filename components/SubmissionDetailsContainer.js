@@ -13,7 +13,7 @@ export default function SubmissionDetailsContainer({ data }) {
         </header>
         <section className="flex flex-col">
           {answers.map(({ id, question, answer }) => (
-            <div key={id} className="answer__body gap-2 p-2 rounded">
+            <div key={id} className="answer__body gap-2 p-2 rounded odd:bg-gray-200">
               <h1 className="text-xl font-bold">{question.title}</h1>
               <p className="text-gray-600">{answer}</p>
             </div>
