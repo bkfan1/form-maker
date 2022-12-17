@@ -46,9 +46,7 @@ export default function QuestionPreviewer({ questionData, inputData }) {
 
       {option === "linear-range" && (
         <fieldset className="flex gap-2 items-center">
-          <label>{min}</label>
-          <input type="range" defaultValue={min} min={min} max={max} />
-          <label>{max}</label>
+          <input type="number" defaultValue={min} min={min} max={max} placeholder={`Type a number between ${min} and ${max}`} className="customInput rangeInput w-full p-1 border-2 rounded focus:border-indigo-800" />
         </fieldset>
       )}
     </>
