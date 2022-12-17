@@ -4,15 +4,18 @@ import SendInvitationForm from "./forms/SendInvitationForm";
 import { generateSubmitFormLink } from "../utils/strings";
 import { nanoid } from "nanoid";
 
-const sectionBtns = [{
-  id:nanoid(),
-  name:"link",
-  icon: "bi bi-link"
-},{
-  id:nanoid(),
-  name:"email",
-  icon: "bi bi-envelope"
-}, ]
+const sectionBtns = [
+  {
+    id: nanoid(),
+    name: "link",
+    icon: "bi bi-link",
+  },
+  {
+    id: nanoid(),
+    name: "email",
+    icon: "bi bi-envelope",
+  },
+];
 
 export default function ShareFormMethodsContainer() {
   const { formData } = useContext(FormEditorContext);
@@ -34,7 +37,17 @@ export default function ShareFormMethodsContainer() {
           <h1 className="text-xl font-bold">Share form</h1>
           <h2 className="font-bold">Available methods:</h2>
           <menu className="flex gap-4">
-           {sectionBtns.map((btn)=><button key={btn.id} onClick={()=>setSection(btn.name)} className={`ease-in-out duration-100 border-b-2 ${section === btn.name && 'border-b-indigo-800'}`}><i className={`${btn.icon} text-xl`}/></button>)}
+            {sectionBtns.map((btn) => (
+              <button
+                key={btn.id}
+                onClick={() => setSection(btn.name)}
+                className={`ease-in-out duration-100 border-b-2 ${
+                  section === btn.name && "border-b-indigo-800"
+                }`}
+              >
+                <i className={`${btn.icon} text-xl`} />
+              </button>
+            ))}
           </menu>
         </header>
         <hr />
@@ -42,9 +55,7 @@ export default function ShareFormMethodsContainer() {
         <main className="flex flex-col gap-2">
           {section === "link" && (
             <section>
-              <h3>
-                Link
-              </h3>
+              <h3>Link</h3>
               <fieldset className="flex gap-2">
                 <input
                   type="text"
