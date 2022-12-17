@@ -1,10 +1,23 @@
-import Link from "next/link";
-import FormCard from "../../../../components/FormCard";
-import Layout from "../../../../components/ui/Layout";
 import { verifyTokenServerSide } from "../../../../middlewares/authentication/jwt";
 import { getAccountForms } from "../../../../middlewares/forms";
 
+import { useContext } from "react";
+import { SearchContext } from "../../../../contexts/SearchContext";
+
+
+import Link from "next/link";
+import FormCard from "../../../../components/FormCard";
+import Layout from "../../../../components/ui/Layout";
+
 export default function UserFormsPage({ forms }) {
+  const { searchTerm } = useContext(SearchContext);
+  const results =
+    searchTerm !== ""
+      ? forms.filter(
+          (form) => (form.id === searchTerm || form.id.includes(searchTerm)) || (form.title === searchTerm || form.title.includes(searchTerm))
+        )
+      : forms;
+
   return (
     <>
       <Layout>
@@ -16,7 +29,7 @@ export default function UserFormsPage({ forms }) {
 
             <menu className="w-fit">
               <Link href={"./add"}>
-                <form className="flex flex-col gap-2 w-32 h-32">
+                <form className="flex flex-col gap-2 w-32 h-32" title="Create new blank form">
                   <button className="ease-in-out duration-100 w-full h-24 bg-white border rounded hover:shadow-md hover:text-indigo-800">
                     <i className="bi bi-plus text-4xl" />
                   </button>
@@ -32,12 +45,11 @@ export default function UserFormsPage({ forms }) {
             </header>
 
             <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-8 w-full">
-              {forms.map((form) => (
+              {results.map((form) => (
                 <FormCard key={form.id} data={form} />
               ))}
             </div>
           </section>
-
         </main>
       </Layout>
     </>
