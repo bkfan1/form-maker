@@ -1,47 +1,41 @@
 import connection from "../../database/connection";
-import { hash } from "bcrypt";
 import Account from "../../database/models/account";
 import { fullname, email } from "../../utils/regex";
+import { encryptPassword } from "../account/password";
 
 export const registerAccount = async (req, res, token) => {
   if (token) {
     return await res.status(403).json({ message: "" });
   }
 
-  const db = await connection();
-
   const { body } = req;
 
   if (!body.fullname || !body.email || !body.password) {
-    return await res.status(400).json({ message: "1" });
+    return await res.status(400).json({ message: "" });
   }
 
   if (!fullname.test(body.fullname)) {
-    return await res.status(400).json({ message: "2" });
+    return await res.status(400).json({ message: "" });
   }
 
   if (!email.test(body.email)) {
-    return await res.status(400).json({ message: "3" });
+    return await res.status(400).json({ message: "" });
   }
 
   if (body.password.length < 8) {
-    return await res.status(400).json({ message: "4" });
-  }
-
-  const results = await Account.findOne({ email: body.email });
-  if (results) {
-    return await res.status(400).json({ message: "s" });
-  }
-
-  let hashedPassword;
-
-  try {
-    hashedPassword = await hash(body.password, 10);
-  } catch (error) {
-    return await res.status(500).json({ message: "" });
+    return await res.status(400).json({ message: "" });
   }
 
   try {
+    const db = await connection();
+
+    const results = await Account.findOne({ email: body.email });
+    if (results) {
+      return await res.status(400).json({ message: "" });
+    }
+
+    const hashedPassword = await encryptPassword(body.password);
+
     const newAccount = await Account.create({
       fullname: body.fullname,
       email: body.email,
