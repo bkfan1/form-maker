@@ -2,7 +2,6 @@ import connection from "../../database/connection";
 import Form from "../../database/models/form";
 import Account from "../../database/models/account";
 import {
-  domain,
   generateInvitationHTMLString,
   generateSubmitFormLink,
 } from "../../utils/strings";
