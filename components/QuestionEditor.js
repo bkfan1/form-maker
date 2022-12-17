@@ -166,7 +166,7 @@ export default function QuestionEditor({ data }) {
                       type="number"
                       onChange={(e) => handleOnChangeLinearRange(e, id)}
                       name="min"
-                      value={inputData.min}
+                      defaultValue={inputData.min}
                       min={0}
                       max={inputData.max}
                       placeholder="Min value"
@@ -177,7 +177,7 @@ export default function QuestionEditor({ data }) {
                       type="number"
                       onChange={(e) => handleOnChangeLinearRange(e, id)}
                       name="max"
-                      value={inputData.max}
+                      defaultValue={inputData.max}
                       min={inputData.min}
                       placeholder="Max value"
                       className="customInput rangeInput w-32 p-1 border-b-2 border-b-gray-500 focus:border-b-indigo-800"
