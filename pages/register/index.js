@@ -1,11 +1,19 @@
+import Link from "next/link";
+import AppEmblem from "../../components/AppEmblem";
 import RegisterForm from "../../components/forms/RegisterForm";
 import { verifyTokenServerSide } from "../../middlewares/authentication/jwt";
 
 export default function RegisterPage() {
   return (
     <>
-      <main className="flex flex-col items-center justify-center min-h-screen">
-        <RegisterForm />
+      <main className="flex flex-col items-center justify-center gap-4 min-h-screen">
+        <AppEmblem />
+        <div className="flex flex-col gap-2">
+          <RegisterForm />
+          <Link href="/login">
+            <span className="text-sm text-blue-500">Log In</span>{" "}
+          </Link>
+        </div>
       </main>
     </>
   );
