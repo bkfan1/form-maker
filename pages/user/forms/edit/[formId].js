@@ -3,7 +3,7 @@ import Layout from "../../../../components/ui/Layout";
 import Modal from "../../../../components/Modal";
 import FormEditorWrapper from "../../../../components/FormEditorWrapper";
 import ShareFormMethodsContainer from "../../../../components/ShareFormMethodsContainer";
-import SubmissionsTable from "../../../../components/SubmissionsTable";
+import SubmissionsTable from "../../../../components/tables/SubmissionsTable";
 import { FormEditorProvider } from "../../../../contexts/FormEditorContext";
 import { verifyTokenServerSide } from "../../../../middlewares/authentication/jwt";
 import { getUniqueForm } from "../../../../middlewares/forms";
