@@ -19,10 +19,19 @@ export default function FormEditor() {
       <div className="flex flex-col lg:w-[700px] gap-2">
         <header className="flex justify-between p-4 bg-white border rounded border-t-8 border-t-indigo-800 shadow-md">
           <form className="flex flex-col gap-4">
-            <fieldset>
+            {previewForm ? (
+              <>
+              <h1 className="font-bold text-2xl">{formData.title}</h1>
+              <p>{formData.description}</p>
+              </>
+            ) : (
+              <>
+              <fieldset>
               <input
                 type="text"
                 name="title"
+                title="Title of this form"
+                placeholder="Title of this form"
                 onChange={(e) => handleOnChangeFormHeaders(e)}
                 value={formData.title}
                 disabled={previewForm ? true : false}
@@ -30,16 +39,20 @@ export default function FormEditor() {
               />
             </fieldset>
 
-            <fieldset>
+            <fieldset className="w-full">
               <input
                 type="text"
                 name="description"
+                title="Description of this form"
+                placeholder="Description of this form"
                 onChange={(e) => handleOnChangeFormHeaders(e)}
                 value={formData.description}
                 disabled={previewForm ? true : false}
-                className="customInput ease-in-out duration-100 border-2 border-white focus:border-b-indigo-800"
+                className="customInput ease-in-out duration-100 w-full border-2 border-white focus:border-b-indigo-800"
               />
             </fieldset>
+              </>
+            )}
           </form>
         </header>
 
