@@ -1,15 +1,18 @@
-import { nanoid } from "nanoid";
 import { useContext } from "react";
-import { FormEditorContext } from "../contexts/FormEditorContext";
 import { useRouter } from "next/router";
-import axios from "axios";
+
+import { FormEditorContext } from "../contexts/FormEditorContext";
 import { ModalWindowContext } from "../contexts/ModalWindowContext";
+
+import axios from "axios";
+import { nanoid } from "nanoid";
+
 
 export default function FormEditorActionsMenu() {
   const router = useRouter();
   const { pathname } = router;
 
-  const { showModal, setShowModal } = useContext(ModalWindowContext);
+  const { setShowModal } = useContext(ModalWindowContext);
 
   const { formData, dispatch, previewForm, setPreviewForm } =
     useContext(FormEditorContext);
@@ -67,24 +70,36 @@ export default function FormEditorActionsMenu() {
     <>
       <menu className="flex flex-col gap-2 p-2 text-xl border rounded bg-white shadow-md">
         <section className="flex flex-col gap-2">
-          <button
-            title={previewForm ? "Back to edit mode" : "Preview form"}
-            onClick={() => setPreviewForm(!previewForm)}
-          >
-            <i className="bi bi-eye" />
-          </button>
+          {formData.questions.length >= 1 && (
+            <>
+              <button
+                title={previewForm ? "Back to edit mode" : "Preview form"}
+                onClick={() => setPreviewForm(!previewForm)}
+              >
+                <i className="bi bi-eye" />
+              </button>
 
-          <button title="Share form" onClick={() => setShowModal(true)}>
-            <i className="bi bi-share" />
-          </button>
+              <button title="Share form" onClick={() => setShowModal(true)}>
+                <i className="bi bi-share" />
+              </button>
+            </>
+          )}
         </section>
-        {pathname === "/user/forms/edit/[formId]" && !previewForm ? <hr /> : ""}
+        {formData.questions.length >= 1 && <hr />}
 
         <section className="flex flex-col gap-2">
           {!previewForm && (
             <button title="Add new question" onClick={handleAddNewQuestion}>
               <i className="bi bi-plus-circle" />
             </button>
+          )}
+
+          {pathname === "/user/forms/add" && formData.questions.length >= 1 ? (
+            <button onClick={handleCreateForm}>
+              <i className="bi bi-check-circle" />
+            </button>
+          ) : (
+            ""
           )}
 
           {pathname === "/user/forms/edit/[formId]" && !previewForm ? (
