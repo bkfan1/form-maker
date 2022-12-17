@@ -6,7 +6,6 @@ import { createToken } from "../jwt";
 import { serialize } from "cookie";
 
 export const handleLogin = async (req, res) => {
-
   const { body } = req;
 
   if (!body.email || !body.password) {
@@ -49,7 +48,7 @@ export const handleLogin = async (req, res) => {
 
     res.setHeader("Set-Cookie", cookie);
 
-    return await res.status(200).json({ message: "" });
+    return await res.status(200).json({ accountName: found.fullname });
   } catch (error) {
     return await res.status(500).json({ message: "" });
   }
