@@ -1,9 +1,7 @@
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { email, fullname } from "../../utils/regex";
 import FieldErrorMessage from "../FieldErrorMessage";
 import axios from "axios";
-import { useRouter } from "next/router";
 
 export default function RegisterForm() {
   const {
@@ -13,15 +11,10 @@ export default function RegisterForm() {
   } = useForm();
 
   const onSubmit = async (data) => {
-
     try {
-      const res = await axios.post('/api/register', data);
-      console.log("registered")
-      
-    } catch (error) {
-      console.warn("error!")
-    }
-    
+      const res = await axios.post("/api/register", data);
+      console.log(res);
+    } catch (error) {}
   };
 
   return (
@@ -85,13 +78,8 @@ export default function RegisterForm() {
         <button className="ease-in-out duration-100 p-2 rounded text-white bg-indigo-800 hover:opacity-90">
           Register
         </button>
-
-        <section>
-          <Link href="/login">
-            <span className="text-sm text-blue-500">Login</span>
-          </Link>
-        </section>
       </form>
+
     </>
   );
 }

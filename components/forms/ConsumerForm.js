@@ -1,32 +1,27 @@
-import {useState} from "react";
+import { useState } from "react";
 import { useRouter } from "next/router";
 
 import axios from "axios";
 import { nanoid } from "nanoid";
 
 export default function ConsumerForm({ formData, setSubmitted }) {
-    const router = useRouter();
-    const {pathname} = router;
-  const { id, title, description, questions, } = formData;
+  const router = useRouter();
+  const { pathname } = router;
+  const { id, title, description, questions } = formData;
 
-  const [submission, setSubmission] = useState(
+  const [submission, setSubmission] = useState({
+    answers: questions.map((question) => ({
+      id: nanoid(),
+      question: {
+        id: question.id,
+        title: question.title,
+      },
 
-    {
-      
-      answers:  questions.map((question) => ({
-        id: nanoid(),
-        question: {
-          id: question.id,
-          title: question.title,
-        },
-  
-        answer: "",
-      })),
+      answer: "",
+    })),
 
-      submittedAt: new Date(),
-    }
-    
-  );
+    submittedAt: new Date(),
+  });
 
   const handleOnChangeAnswerInput = (e, id) => {
     const { target } = e;
@@ -41,21 +36,20 @@ export default function ConsumerForm({ formData, setSubmitted }) {
 
     updatedAnswers.splice(index, 1, foundAnswer);
 
-    setSubmission({...submission, answers: [...updatedAnswers]});
+    setSubmission({ ...submission, answers: [...updatedAnswers] });
   };
 
   const handleOnSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await axios.put(
-        `/api/account/forms/submissions/${id}`,
-        {id:nanoid(), ...submission}
-      );
+      const res = await axios.put(`/api/account/forms/submissions/${id}`, {
+        id: nanoid(),
+        ...submission,
+      });
       setSubmitted(true);
     } catch (error) {
       console.log(error);
-      console.warn("error!");
     }
   };
 
@@ -63,7 +57,7 @@ export default function ConsumerForm({ formData, setSubmitted }) {
     <>
       <form
         onSubmit={(e) => handleOnSubmit(e)}
-        className="flex flex-col gap-4 md:w-[500px]"
+        className="flex flex-col gap-4 lg:w-[600px]"
       >
         <header className="flex flex-col gap-2 p-4 border-t-8 rounded border-t-indigo-800 bg-white shadow-md">
           <h1 className="text-2xl font-bold">{title}</h1>
@@ -92,9 +86,12 @@ export default function ConsumerForm({ formData, setSubmitted }) {
                   className="customInput p-1 border-2 rounded resize-none focus:border-indigo-800"
                   minLength={inputData.minLength}
                   maxLength={inputData.maxLength}
+                  placeholder="Type your answer"
                   required={required ? true : false}
                   onChange={(e) => handleOnChangeAnswerInput(e, id)}
-                  disabled={pathname === "/user/forms/edit/[formId]" ? true : false}
+                  disabled={
+                    pathname === "/user/forms/edit/[formId]" ? true : false
+                  }
                 />
               )}
 
@@ -105,7 +102,9 @@ export default function ConsumerForm({ formData, setSubmitted }) {
                   maxLength={inputData.maxLength}
                   required={required ? true : false}
                   onChange={(e) => handleOnChangeAnswerInput(e, id)}
-                  disabled={pathname === "/user/forms/edit/[formId]" ? true : false}
+                  disabled={
+                    pathname === "/user/forms/edit/[formId]" ? true : false
+                  }
                 ></textarea>
               )}
 
@@ -115,32 +114,34 @@ export default function ConsumerForm({ formData, setSubmitted }) {
                   className="customInput p-1 border-2 rounded resize-none focus:border-indigo-800"
                   required={required ? true : false}
                   onChange={(e) => handleOnChangeAnswerInput(e, id)}
-                  disabled={pathname === "/user/forms/edit/[formId]" ? true : false}
+                  disabled={
+                    pathname === "/user/forms/edit/[formId]" ? true : false
+                  }
                 />
               )}
 
               {option === "linear-range" && (
-                <fieldset className="flex gap-2 items-center">
-                  <label>{inputData.min}</label>
+                <fieldset className="flex flex-col gap-2">
                   <input
-                    type="range"
-                    defaultValue={inputData.min}
+                    type="number"
                     min={inputData.min}
                     max={inputData.max}
+                    onChange={(e)=>handleOnChangeAnswerInput(e, id)}
+                    placeholder={`Enter a number between ${inputData.min} and ${inputData.max}`}
                     required={required ? true : false}
-                    onChange={(e) => handleOnChangeAnswerInput(e, id)}
-                    disabled={pathname === "/user/forms/edit/[formId]" ? true : false}
+                    className="customInput rangeInput p-1 border-2 rounded resize-none focus:border-indigo-800"
                   />
-                  <label>{inputData.max}</label>
                 </fieldset>
               )}
             </fieldset>
           ))}
         </section>
 
-        {pathname === "/submit/[formId]" && <button className="ease-in-out duration-150 text-white p-2 border rounded bg-indigo-800 hover:opacity-90">
-          Send
-        </button>}
+        {pathname === "/submit/[formId]" && (
+          <button className="ease-in-out duration-150 text-white p-2 border rounded bg-indigo-800 hover:opacity-90">
+            Send
+          </button>
+        )}
       </form>
     </>
   );

@@ -4,9 +4,12 @@ import { email } from "../../utils/regex";
 import FieldErrorMessage from "../FieldErrorMessage";
 import axios from "axios";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import { AccountNameContext } from "../../contexts/AccountNameContext";
 
 export default function LoginForm() {
   const router = useRouter();
+  const { setName } = useContext(AccountNameContext);
   const {
     register,
     handleSubmit,
@@ -14,12 +17,12 @@ export default function LoginForm() {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
-      const res = await axios.post('/api/auth/login', data);
-      router.push('/user/forms/view');
+      const res = await axios.post("/api/auth/login", data);
+      setName(res.data.accountName);
+      router.push("/user/forms/view");
     } catch (error) {
-      console.warn("error")
+      console.warn("error");
     }
   };
 
@@ -50,6 +53,10 @@ export default function LoginForm() {
               type="password"
               {...register("password", {
                 required: { value: true, message: "This field is required." },
+                minLength: {
+                  value: 8,
+                  message: "Password needs to be at least 8 characters long.",
+                },
               })}
               placeholder="Password"
               className="customInput p-1 border-2 rounded focus:border-indigo-800"
@@ -65,13 +72,8 @@ export default function LoginForm() {
         <button className="ease-in-out duration-100 p-2 rounded text-white bg-indigo-800 hover:opacity-90">
           Login
         </button>
-
-        <section>
-          <Link href="/register">
-            <span className="text-sm text-blue-500">Create account</span>
-          </Link>
-        </section>
       </form>
+      
     </>
   );
 }
