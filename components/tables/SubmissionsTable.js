@@ -24,7 +24,7 @@ export default function SubmissionsTable() {
 
   return (
     <>
-      <div className="flex flex-col gap-2 p-2 lg:w-[768px] border rounded bg-white">
+      <div className="flex flex-col gap-2 w-96 sm:w-[468px] md:w-[568px] lg:w-[768px] p-2 border rounded bg-white">
         <header className="p-2">
           <h1 className="text-xl">{submissions.length} answers</h1>
         </header>
