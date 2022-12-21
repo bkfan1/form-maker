@@ -1,11 +1,11 @@
-import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { email } from "../../utils/regex";
 import FieldErrorMessage from "../FieldErrorMessage";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { AccountNameContext } from "../../contexts/AccountNameContext";
+import { notify } from "../../utils/toasts";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -16,13 +16,22 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm();
 
+  const [submitted, setSubmitted] = useState(false);
+
   const onSubmit = async (data) => {
+    setSubmitted(true);
     try {
       const res = await axios.post("/api/auth/login", data);
       setName(res.data.accountName);
+      notify("success", "Logged successfully.");
+
       router.push("/user/forms/view");
     } catch (error) {
-      console.warn("error");
+      const { response } = error;
+      notify("error", response.data.message);
+      setTimeout(()=>{
+        setSubmitted(false);
+      }, 2000);
     }
   };
 
@@ -30,9 +39,10 @@ export default function LoginForm() {
     <>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex flex-col gap-4 w-80 p-2 border rounded bg-white"
+        disabled={submitted ? true : false}
+        className={`flex flex-col gap-4 w-80 p-2 border rounded bg-white`}
       >
-        <section className="flex flex-col gap-2">
+        <section className={`flex flex-col gap-2 ${submitted ? 'opacity-70' : ""}`}>
           <fieldset className="flex flex-col">
             <input
               type="email"
@@ -42,6 +52,7 @@ export default function LoginForm() {
               })}
               placeholder="Email"
               className="customInput p-1 border-2 rounded focus:border-indigo-800"
+              disabled={submitted ? true : false}
             />
             {errors.fullname && (
               <FieldErrorMessage message={errors.email.message} />
@@ -60,6 +71,7 @@ export default function LoginForm() {
               })}
               placeholder="Password"
               className="customInput p-1 border-2 rounded focus:border-indigo-800"
+              disabled={submitted ? true : false}
             />
             {errors.password && (
               <FieldErrorMessage message={errors.password.message} />
@@ -67,13 +79,15 @@ export default function LoginForm() {
           </fieldset>
         </section>
 
-        <input type="submit" hidden />
+        <input type="submit" hidden disabled={submitted ? true : false} />
 
-        <button className="ease-in-out duration-100 p-2 rounded text-white bg-indigo-800 hover:opacity-90">
+        <button
+          disabled={submitted ? true : false}
+          className={`ease-in-out duration-100 p-2 rounded text-white bg-indigo-800  ${submitted ? "opacity-70" : "hover:opacity-90"}`}
+        >
           Login
         </button>
       </form>
-      
     </>
   );
 }

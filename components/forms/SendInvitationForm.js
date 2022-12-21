@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { useForm } from "react-hook-form";
 import { FormEditorContext } from "../../contexts/FormEditorContext";
 import { email } from "../../utils/regex";
+import { notify } from "../../utils/toasts";
 import FieldErrorMessage from "../FieldErrorMessage";
 
 export default function SendInvitationForm() {
@@ -18,9 +19,10 @@ export default function SendInvitationForm() {
         `/api/account/forms/sendInvitation/${formData.id}`,
         data
       );
-      console.log("success");
+      notify('success', 'Invitation sent successfully.')
     } catch (error) {
-      console.warn("error email");
+      const {response} = error;
+      notify('error', response.data.message);
     }
   };
   return (

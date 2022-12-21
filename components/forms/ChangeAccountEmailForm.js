@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { email } from "../../utils/regex";
 import FieldErrorMessage from "../FieldErrorMessage";
+import { notify } from "../../utils/toasts";
 
 export default function ChangeAccountEmailForm() {
   const {
@@ -14,9 +15,11 @@ export default function ChangeAccountEmailForm() {
   const onSubmit = async (data) => {
     try {
       const res = await axios.put("/api/account/email", data);
-      console.log(res)
+      notify("success", "Email updated successfully.");
     } catch (error) {
-      console.warn(error)
+      console.warn(error);
+      const { response } = error;
+      notify("error", response.data.message);
     }
   };
 
@@ -34,7 +37,9 @@ export default function ChangeAccountEmailForm() {
                 pattern: { value: email, message: "Type a valid email." },
               })}
             />
-            {errors.newEmail && <FieldErrorMessage message={errors.newEmail.message} />}
+            {errors.newEmail && (
+              <FieldErrorMessage message={errors.newEmail.message} />
+            )}
           </label>
 
           <label className="flex flex-col">

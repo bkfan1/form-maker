@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import { email, fullname } from "../../utils/regex";
 import FieldErrorMessage from "../FieldErrorMessage";
 import axios from "axios";
+import { notify } from "../../utils/toasts";
 
 export default function RegisterForm() {
   const {
@@ -13,8 +14,11 @@ export default function RegisterForm() {
   const onSubmit = async (data) => {
     try {
       const res = await axios.post("/api/register", data);
-      console.log(res);
-    } catch (error) {}
+      notify("success", "Registered successfully").console.log(res);
+    } catch (error) {
+      const { response } = error;
+      notify("error", response.data.message);
+    }
   };
 
   return (
@@ -79,7 +83,6 @@ export default function RegisterForm() {
           Register
         </button>
       </form>
-
     </>
   );
 }

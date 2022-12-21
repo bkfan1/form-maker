@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 
 import axios from "axios";
 import FieldErrorMessage from "../FieldErrorMessage";
+import { notify } from "../../utils/toasts";
 
 export default function ChangeAccountPasswordForm() {
   const {
@@ -14,7 +15,11 @@ export default function ChangeAccountPasswordForm() {
     try {
       const res = await axios.put("/api/account/password", data);
       console.log(res);
-    } catch (error) {}
+      notify('success', 'Password updated successfully.')
+    } catch (error) {
+      const {response} = error
+      notify('error', response.data.message)
+    }
   };
 
   return (
