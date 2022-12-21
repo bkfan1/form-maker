@@ -8,7 +8,7 @@ const formSchema = new Schema(
 
     questions: { type: Array },
 
-    submissions: {type:Array},
+    submissions: { type: Array },
 
     createdAt: { type: Date },
     updatedAt: { type: Date },
