@@ -1,7 +1,8 @@
 import LoginForm from "../../components/forms/LoginForm";
 import { verifyTokenServerSide } from "../../middlewares/authentication/jwt";
-import AppEmblem from "../../components/AppEmblem";
+import AppEmblem from "../../components/ui/AppEmblem";
 import Link from "next/link";
+import Footer from "../../components/ui/Footer";
 
 export default function LoginPage() {
   return (
@@ -15,6 +16,7 @@ export default function LoginPage() {
           </Link>
         </div>
       </main>
+      <Footer />
     </>
   );
 }
