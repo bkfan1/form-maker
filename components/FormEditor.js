@@ -1,64 +1,64 @@
-import { useContext} from "react";
+import { useContext } from "react";
 import { FormEditorContext } from "../contexts/FormEditorContext";
 import QuestionEditor from "./QuestionEditor";
 
 export default function FormEditor() {
-  const { formData, dispatch, previewForm } = useContext(FormEditorContext);
+  const {formData, dispatch} = useContext(FormEditorContext);
 
-  const handleOnChangeFormHeaders = (e) => {
-    const { target } = e;
-    const { name, value } = target;
-    dispatch({
-      type: "UPDATE_FORM_HEADERS",
-      payload: { field: name, newValue: value },
-    });
-  };
+  const handleOnChange = (e)=>{
+    const {target} = e;
+    let {name, value}= target;
+    console.log(value)
+    dispatch({type:'UPDATE_FORM_HEADERS', payload: {field:name, newValue: value}})
+  }
+
+  const handleOnBlur = (e)=>{
+    const {target} = e;
+    let {name, value}= target;
+    console.log(value)
+    if(value.length === 0){
+      if(name === 'title'){
+        value = 'Untitled form';
+      }
+    }
+    dispatch({type:'UPDATE_FORM_HEADERS', payload: {field:name, newValue: value}})
+  }
+
 
   return (
     <>
-      <div className="flex flex-col lg:w-[700px] gap-2">
-        <header className="flex justify-between p-4 bg-white border rounded border-t-8 border-t-indigo-800 shadow-md">
-          <form className="flex flex-col gap-4">
-            {previewForm ? (
-              <>
-              <h1 className="font-bold text-2xl">{formData.title}</h1>
-              <p>{formData.description}</p>
-              </>
-            ) : (
-              <>
-              <fieldset>
+      <div className={`formEditor flex flex-col gap-2 w-[468px] sm:w-[468px] md:w-[568px] lg:w-[768px] h-[600px] overflow-y-scroll hideScrollbar`}>
+        <header>
+          <form onSubmit={(e)=>e.preventDefault()} className="flex flex-col gap-4 p-4 shadow-sm border-t-8 border-t-indigo-800 rounded  bg-white">
+            <fieldset>
               <input
                 type="text"
                 name="title"
-                title="Title of this form"
-                placeholder="Title of this form"
-                onChange={(e) => handleOnChangeFormHeaders(e)}
                 value={formData.title}
-                disabled={previewForm ? true : false}
-                className="customInput pb-1 text-2xl font-bold customInput ease-in-out duration-100 border-2 border-white focus:border-b-indigo-800"
+                onChange={(e)=>handleOnChange(e)}
+                onBlur={(e)=>handleOnBlur(e)}
+                placeholder="Title"
+                className="ease-in-out duration-100 customInput w-full text-2xl font-bold border-b-2 focus:border-b-indigo-800 "
               />
+              
             </fieldset>
-
-            <fieldset className="w-full">
-              <input
+            <fieldset>
+            <input
                 type="text"
                 name="description"
-                title="Description of this form"
-                placeholder="Description of this form"
-                onChange={(e) => handleOnChangeFormHeaders(e)}
                 value={formData.description}
-                disabled={previewForm ? true : false}
-                className="customInput ease-in-out duration-100 w-full border-2 border-white focus:border-b-indigo-800"
+                onChange={(e)=>handleOnChange(e)}
+                placeholder="Description"
+                className="ease-in-out duration-100 customInput w-full border-b-2 focus:border-b-indigo-800 "
               />
             </fieldset>
-              </>
-            )}
+            <input type={'submit'} hidden/>
           </form>
         </header>
 
         <section className="flex flex-col gap-4">
-          {formData.questions.map((q) => (
-            <QuestionEditor key={q.id} data={q} />
+          {formData.questions.map((question)=>(
+            <QuestionEditor key={question.id} questionData={question} />
           ))}
         </section>
       </div>
