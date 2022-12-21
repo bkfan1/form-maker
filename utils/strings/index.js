@@ -1,6 +1,6 @@
 
 export const domain =
-  (process.env.NODE_ENV === "production" && "https://www.form-maker.vercel.app") ||
+  (process.env.NODE_ENV === "production" && "form-maker.vercel.app") ||
   (process.env.NODE_ENV === "development" && `http://localhost:3000`);
 
 export const generateSubmitFormLink = (formId)=>{
