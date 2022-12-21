@@ -4,7 +4,7 @@ export const initialFormState = {
   description: "Description of this form",
 
   questions: [],
-  receivedAnswers: [],
+  submissions: [],
 
   createdAt: new Date(),
   updatedAt: null,
