@@ -17,7 +17,7 @@ export const verifyToken = async (req, res, next) => {
   const { cookie } = req.headers;
 
   if (!cookie) {
-    return await res.status(400).json({ message: "sadasd" });
+    return await res.status(400).json({ message: "" });
   }
 
   const parsedCookie = parse(cookie);
@@ -27,7 +27,7 @@ export const verifyToken = async (req, res, next) => {
     const decoded = verify(authToken, process.env.ACCESS_TOKEN_SECRET);
     return next(req, res, decoded);
   } catch (error) {
-    return await res.status(500).json({ message: "" });
+    return await res.status(500).json({ message: "Server error." });
   }
 };
 
