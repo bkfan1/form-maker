@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @import "../node_modules/bootstrap-icons/font/bootstrap-icons.css";
+@import "react-alice-carousel/lib/alice-carousel.css";
 
 body {
   background-color: #f0ebf8;
@@ -23,6 +24,16 @@ body {
   -moz-appearance: textfield;
 }
 
+.hideScrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.hideScrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 .subMenu__section:last-of-type {
   border-bottom: none;
 }
@@ -36,3 +47,5 @@ body {
     display: none;
   }
 }
+
+
