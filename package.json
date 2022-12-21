@@ -22,7 +22,8 @@
     "nodemailer": "^6.8.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.39.4"
+    "react-hook-form": "^7.39.4",
+    "react-hot-toast": "^2.4.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
