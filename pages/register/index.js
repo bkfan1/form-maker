@@ -1,7 +1,8 @@
 import Link from "next/link";
-import AppEmblem from "../../components/AppEmblem";
+import AppEmblem from "../../components/ui/AppEmblem";
 import RegisterForm from "../../components/forms/RegisterForm";
 import { verifyTokenServerSide } from "../../middlewares/authentication/jwt";
+import Footer from "../../components/ui/Footer";
 
 export default function RegisterPage() {
   return (
@@ -15,6 +16,7 @@ export default function RegisterPage() {
           </Link>
         </div>
       </main>
+      <Footer />
     </>
   );
 }
