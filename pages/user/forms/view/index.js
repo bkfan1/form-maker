@@ -45,7 +45,7 @@ export default function UserFormsPage({ forms }) {
             </header>
 
             <div className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 gap-8 w-full">
-              {results.map((form) => (
+              {results.length === 0 ? <p>No matches found</p> : results.map((form) => (
                 <FormCard key={form.id} data={form} />
               ))}
             </div>
